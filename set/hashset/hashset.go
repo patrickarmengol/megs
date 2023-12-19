@@ -32,9 +32,23 @@ func (s *Set[T]) Clear() {
 	s.m = make(map[T]struct{})
 }
 
-func (s *Set[T]) Has(vals ...T) bool {
+func (s *Set[T]) Has(val T) bool {
+	_, ok := s.m[val]
+	return ok
+}
+
+func (s *Set[T]) HasAny(vals ...T) bool {
 	for _, v := range vals {
-		if _, ok := s.m[v]; !ok {
+		if s.Has(v) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *Set[T]) HasAll(vals ...T) bool {
+	for _, v := range vals {
+		if !s.Has(v) {
 			return false
 		}
 	}
